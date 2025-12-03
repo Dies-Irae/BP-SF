@@ -1,7 +1,7 @@
 #  BP-SF Decoder for qLDPC codes
 This repository contains the implementation and examples for the BP-SF decoder used in:
 
-Wang, M., Li, A., & Mueller, F. (2025). Fully Parallelized BP Decoding for Quantum LDPC Codes Can Outperform BP-OSD (HPCA2026).
+Fully Parallelized BP Decoding for Quantum LDPC Codes Can Outperform BP-OSD (HPCA2026).
 
 The codebase provides a parallelized belief-propagation (BP) decoder implementation, helper scripts for circuit-level experiments, and a minimal Cython extension (based on the [`ldpc`](https://github.com/quantumgizmos/ldpc) project) used for performance-critical routines.
 ## 1. Requirements
