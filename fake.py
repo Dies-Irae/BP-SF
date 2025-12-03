@@ -87,6 +87,9 @@ if __name__ == "__main__":
             else:
                 times.append(time_end - time_start)
         print("Ave time per sample: ", 1000 * sum(times)/len(times), "ms")
+        fname = f"./data/fake.txt"
+        with open(fname, "a") as f:
+            f.write(f"Ave time per sample: {1000 * sum(times)/len(times)} ms\n")
 
 
 

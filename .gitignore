@@ -1,4 +1,4 @@
-venv/
+.venv/
 __pycache__/
 build/
 dist/
@@ -7,3 +7,5 @@ dist/
 .vscode/
 .DS_Store
 *.pyd
+*.txt
+minimal_bp_decoder/src_python/myldpc/bp_decoder/_bp_decoder.cpp

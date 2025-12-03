@@ -60,7 +60,6 @@ if __name__ == "__main__":
     parser.add_argument("--l", type=int, default=12, help="l parameter (default: 12)")
     parser.add_argument("--m", type=int, default=6, help="m parameter (default: 6)")
     parser.add_argument("--p_list", type=str, default="[0.001, 0.002]", help="Physical error rates as JSON list (default: '[0.001, 0.002]')")
-    parser.add_argument("--batch_size", type=int, default=10000, help="Batch size (default: 10000)")
     parser.add_argument("--w_min", type=int, default=1, help="w_min parameter (default: 1)")
     parser.add_argument("--w_max", type=int, default=10, help="w_max parameter (default: 10)")
     parser.add_argument("--n_sample", type=int, default=10, help="n_sample parameter (default: 10)")
@@ -78,7 +77,6 @@ if __name__ == "__main__":
     l, m = args.l, args.m
     p_list = json.loads(args.p_list)
     osd = args.use_osd
-    batch_size = args.batch_size
     w_min = args.w_min
     w_max = args.w_max
     n_sample = args.n_sample
@@ -108,20 +106,23 @@ if __name__ == "__main__":
     BBObj = GBB_code(l, m, p1, p2)
 
     n = 2 * l * m
-    fail_target = 100
-    target_error = 100 
+    fail_target = 10
     code, A_list, B_list = BBObj
+    if osd:
+        fname = f"./data/cbb_test_{l}_{m}_{d}_bposd.txt"
+    else:
+        fname = f"./data/cbb_test_{l}_{m}_{d}_bpsf.txt"
     for p in p_list:
+        print(f"Running p = {p}")
         circ = bb_mem_circuit(BBObj, n, d, None, p)
         dem = circ.detector_error_model()
         chk, obs, priors, col_dict = dem_to_check_matrices(dem, return_col_dict=True)
-        chkDense = np.array(chk.todense())
         manager = mp.Manager()
         fail_counter = manager.Value('i', 0)  # Counter for failures
         sim_counter = manager.Value('i', 0)  # Counter for total simulations
         lock = manager.Lock()
         processes = []
-        decoder_params = {"pcm": chkDense, 
+        decoder_params = {"pcm": chk, 
                             "i_max": max_iter, 
                             "priors": priors, 
                             "topk": topk, 
@@ -144,4 +145,7 @@ if __name__ == "__main__":
         pl = fail_counter.value/sim_counter.value
         print(f"error: {fail_counter.value}, shots: {sim_counter.value}," 
         f"p_L/round: {1 - (1 - pl) ** (1 / d):.4e}")
+        with open(fname, "a") as f:
+            f.write(f"physical error: {p}, error: {fail_counter.value}, shots: {sim_counter.value}," 
+            f"p_L/round: {1 - (1 - pl) ** (1 / d):.4e}\n")
 

@@ -64,6 +64,9 @@ def test_sample(decoder_type, decoder, samples, obs_data, obs, chk):
             time_end = time.time()
             times.append(time_end - time_start)
         print("Ave time per sample: ", 1000 * sum(times)/len(times), "ms")
+    fname = f"./data/{decoder_type}.txt"
+    with open(fname, "a") as f:
+        f.write(f"Ave time per sample: {1000 * sum(times)/len(times)} ms\n")
 
 if __name__ == "__main__":  
     parser = argparse.ArgumentParser(description="Quantum error correction simulation")
