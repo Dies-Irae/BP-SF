@@ -3,7 +3,7 @@ This repository contains the implementation and examples for the BP-SF decoder u
 
 Wang, M., Li, A., & Mueller, F. (2025). Fully Parallelized BP Decoding for Quantum LDPC Codes Can Outperform BP-OSD (HPCA2026).
 
-The codebase provides a parallelized belief-propagation (BP) decoder implementation, helper scripts for circuit-level experiments, and a minimal Cython extension (based on the ldpc project) used for performance-critical routines.
+The codebase provides a parallelized belief-propagation (BP) decoder implementation, helper scripts for circuit-level experiments, and a minimal Cython extension (based on the [`ldpc`](https://github.com/quantumgizmos/ldpc) project) used for performance-critical routines.
 ## 1. Requirements
 - Python 3.11 (other 3.x versions may work but are untested)
 - Recommended: NVIDIA GPU with CUDA to test GPU-accelerated decoding (optional)
