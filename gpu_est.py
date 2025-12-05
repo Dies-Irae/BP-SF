@@ -60,7 +60,7 @@ if __name__ == "__main__":
     for p in p_list:
         print(f"Physical error rate: {p}")
         code, A_list, B_list = BBObj
-        shots = 10000
+        shots = 20000
         circ = build_circuit(code, A_list, B_list, 
                                             p=p, # physical error rate
                                             num_repeat=d, # usually set to code distance
@@ -87,9 +87,9 @@ if __name__ == "__main__":
             else:
                 times.append(time_end - time_start)
         print("Ave time per sample: ", 1000 * sum(times)/len(times), "ms")
-        fname = f"./data/fake.txt"
+        fname = f"./data/time_gpu_est.txt"
         with open(fname, "a") as f:
-            f.write(f"Ave time per sample: {1000 * sum(times)/len(times)} ms\n")
+            f.write(f"{p}, {1000 * sum(times)/len(times)} ms\n")
 
 
 

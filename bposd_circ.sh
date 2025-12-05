@@ -1,5 +1,5 @@
 #!/bin/bash
-NUM_PROCESSES=32 # increase this if you have more cores
+NUM_PROCESSES=16 # increase this if you have more cores
 export PYTHONPATH=./minimal_bp_decoder/src_python:$PYTHONPATH
 # Example script to run test.py with command-line arguments
 echo ""

@@ -27,7 +27,7 @@ def test_sample(decoder_type, decoder, samples, obs_data, obs, chk):
     decoded = np.zeros((samples.shape[0], chk.shape[1]))
     if decoder_type == "bpsf":
         times = []
-        print("TESTING MYBP")
+        print("TESTING BP-SF")
         for i in range(samples.shape[0]):
             time_start = time.time()
             decoder.flip_decode(samples[i])
@@ -64,9 +64,8 @@ def test_sample(decoder_type, decoder, samples, obs_data, obs, chk):
             time_end = time.time()
             times.append(time_end - time_start)
         print("Ave time per sample: ", 1000 * sum(times)/len(times), "ms")
-    fname = f"./data/{decoder_type}.txt"
-    with open(fname, "a") as f:
-        f.write(f"Ave time per sample: {1000 * sum(times)/len(times)} ms\n")
+    
+    return 1000 * sum(times)/len(times)
 
 if __name__ == "__main__":  
     parser = argparse.ArgumentParser(description="Quantum error correction simulation")
@@ -75,7 +74,6 @@ if __name__ == "__main__":
     parser.add_argument("--l", type=int, default=12, help="l parameter (default: 12)")
     parser.add_argument("--m", type=int, default=6, help="m parameter (default: 6)")
     parser.add_argument("--p_list", type=str, default="[0.001, 0.002]", help="Physical error rates as JSON list (default: '[0.001, 0.002]')")
-    parser.add_argument("--batch_size", type=int, default=10000, help="Batch size (default: 10000)")
     parser.add_argument("--w_min", type=int, default=1, help="w_min parameter (default: 1)")
     parser.add_argument("--w_max", type=int, default=10, help="w_max parameter (default: 10)")
     parser.add_argument("--n_sample", type=int, default=10, help="n_sample parameter (default: 10)")
@@ -94,7 +92,6 @@ if __name__ == "__main__":
     num_processes = args.num_processes
     l, m = args.l, args.m
     p_list = json.loads(args.p_list)
-    batch_size = args.batch_size
     w_min = args.w_min
     w_max = args.w_max
     n_sample = args.n_sample
@@ -107,7 +104,7 @@ if __name__ == "__main__":
     BBObj = create_bivariate_bicycle_codes(l, m, a_x, a_ys, b_xs, b_y) #Gross Code
     decoder_type = args.decoder_type  
     code, A_list, B_list = BBObj
-    shots = 10000
+    shots = 20000
     for p in p_list:
         print(f"Physical error rate: {p}")
         circ = build_circuit(code, A_list, B_list, 
@@ -120,7 +117,10 @@ if __name__ == "__main__":
         if decoder_type == "bpsf": 
             my_bpd = FullBP(chk, max_iter, priors, topk=topk, w_min=w_min, w_max=w_max, n_sample=n_sample, max_procs=num_processes, scheduling=args.scheduling)
             print("start testing bpsf")
-            test_sample("bpsf", my_bpd, det_data, obs_data, obs, chk)
+            avg_time = test_sample("bpsf", my_bpd, det_data, obs_data, obs, chk)
+            fname = f"./data/time_{decoder_type}_P={num_processes}.txt"
+            with open(fname, "a") as f:
+                f.write(f"{p}, {avg_time} ms\n")
         elif decoder_type == "bposd":
             bposd = BpOsdDecoder(
                             chk,
@@ -132,7 +132,11 @@ if __name__ == "__main__":
                             osd_order=10
                         )
             print("start testing bposd")
-            test_sample("bposd", bposd, det_data, obs_data, obs, chk)
+            avg_time = test_sample("bposd", bposd, det_data, obs_data, obs, chk)
+            fname = f"./data/time_{decoder_type}.txt"
+            with open(fname, "a") as f:
+                f.write(f"{p}, {avg_time} ms\n")
+            
         elif decoder_type == "bp":
             bp = BpDecoder(
                             chk,
@@ -142,7 +146,10 @@ if __name__ == "__main__":
                             ms_scaling_factor=0,
                         )
             print("start testing bp")
-            test_sample("bp", bp, det_data, obs_data, obs, chk)
+            avg_time = test_sample("bp", bp, det_data, obs_data, obs, chk)
+            fname = f"./data/time_{decoder_type}.txt"
+            with open(fname, "a") as f:
+                f.write(f"{p}, {avg_time} ms\n")
         elif decoder_type == "cudaq":
             opts = dict() 
             opts['error_rate_vec'] = priors
@@ -154,6 +161,9 @@ if __name__ == "__main__":
             chkDenseForNV = np.array(chk.todense(order='C'))
             nvdec = qec.get_decoder('nv-qldpc-decoder', chkDenseForNV, **opts)
             print("start testing CUDAQ BPOSD Single")
-            test_sample("cudaq", nvdec, det_data, obs_data, obs, chk)
+            avg_time = test_sample("cudaq", nvdec, det_data, obs_data, obs, chk)
+            fname = f"./data/time_{decoder_type}.txt"
+            with open(fname, "a") as f:
+                f.write(f"{p}, {avg_time} ms\n")
 
 

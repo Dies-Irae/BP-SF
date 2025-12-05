@@ -63,4 +63,4 @@ sh time.sh       # compare decoding speeds (requires CUDAQ-QEC installed)
 
 After running these scripts, the LER and decoding time data will be saved in the `data` directory. You can generate the plots by running the cells in `plots.ipynb`.
 
-Since running all tests will be very time-consuming, the test scripts only include main results. You can append more tests with different parameters in the shell scripts to reproduce all results in the paper.
+Since running all tests will be very time-consuming (days on a 16 cores machine), the test scripts only include main results. You can append more tests with different parameters in the shell scripts to reproduce all results in the paper.

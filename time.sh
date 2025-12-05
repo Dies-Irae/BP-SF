@@ -1,6 +1,6 @@
 #!/bin/bash
 export PYTHONPATH=./minimal_bp_decoder/src_python:$PYTHONPATH
-Example script to run test.py with command-line arguments
+# Example script to run test.py with command-line arguments
 echo "Speed Bechmanrk for [[144,12,12]] memory experiment (CUDAQ BP1000-OSD10)"
 python benchmark.py \
     --d 12 \
@@ -8,7 +8,6 @@ python benchmark.py \
     --l 12 \
     --m 6 \
     --p_list "[0.001, 0.002, 0.003]" \
-    --batch_size 10000 \
     --w_min 1 \
     --w_max 10 \
     --n_sample 10 \
@@ -21,13 +20,12 @@ python benchmark.py \
     --decoder_type "cudaq" \
 
 echo "Speed Bechmanrk for [[144,12,12]] memory experiment (BPSF, GPU Estimation)"
-python fake.py \
+python gpu_est.py \
     --d 12 \
     --num_processes 1 \
     --l 12 \
     --m 6 \
     --p_list "[0.001, 0.002, 0.003]" \
-    --batch_size 10000 \
     --w_min 1 \
     --w_max 10 \
     --n_sample 10 \
@@ -45,7 +43,6 @@ python benchmark.py \
     --l 12 \
     --m 6 \
     --p_list "[0.001, 0.002, 0.003]" \
-    --batch_size 10000 \
     --w_min 1 \
     --w_max 10 \
     --n_sample 10 \
@@ -64,7 +61,6 @@ python benchmark.py \
     --l 12 \
     --m 6 \
     --p_list "[0.001, 0.002, 0.003]" \
-    --batch_size 10000 \
     --w_min 1 \
     --w_max 10 \
     --n_sample 10 \
@@ -83,7 +79,6 @@ python benchmark.py \
     --l 12 \
     --m 6 \
     --p_list "[0.001, 0.002, 0.003]" \
-    --batch_size 10000 \
     --w_min 1 \
     --w_max 10 \
     --n_sample 10 \
@@ -103,7 +98,6 @@ python benchmark.py \
     --l 12 \
     --m 6 \
     --p_list "[0.001, 0.002, 0.003]" \
-    --batch_size 10000 \
     --w_min 1 \
     --w_max 10 \
     --n_sample 10 \
