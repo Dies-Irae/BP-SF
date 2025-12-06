@@ -91,7 +91,7 @@ if __name__ == "__main__":
     print("Using BP-OSD:", use_osd)
 
     n = 2 * l * m
-    fail_target = 10
+    fail_target = 100
     code, A_list, B_list = BBObj
     if use_osd:
         fname = f"./data/bb_test_{l}_{m}_{d}_bposd.txt"

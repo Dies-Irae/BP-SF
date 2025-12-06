@@ -106,7 +106,7 @@ if __name__ == "__main__":
     BBObj = GBB_code(l, m, p1, p2)
 
     n = 2 * l * m
-    fail_target = 10
+    fail_target = 100
     code, A_list, B_list = BBObj
     if osd:
         fname = f"./data/cbb_test_{l}_{m}_{d}_bposd.txt"
