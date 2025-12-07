@@ -54,8 +54,9 @@ osc_counts = bpd.oscillation_counts
 ```
 
 ## 2. Run Tests
-
+The LER tests (bpsf_circ.sh and bposd_circ.sh) will take days to finish. The time bechmark (time.sh) takes hours.
 ```bash
+mkdir data
 sh bpsf_circ.sh  # test BP-SF on circuit-level simulations
 sh bposd_circ.sh # test BP-OSD on circuit-level simulations (requires ldpc installed)
 sh time.sh       # compare decoding speeds (requires CUDAQ-QEC installed)

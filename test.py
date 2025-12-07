@@ -46,9 +46,9 @@ def decode_worker(d, dem, decoder_params, fail_target, sim_num, fail_num, lock, 
             fail_num.value += np.sum(np.any(residual, axis=1) | (flgs==0))
             sim_num.value += CHUNK
             if sim_num.value % 100000 ==0:
-                pl = fail_num.value/sim_num.value/d
+                pl = fail_num.value/sim_num.value
                 error_bar = 1.96 * np.sqrt(pl*(1-pl)/sim_num.value)/d
-                print(f"error: {fail_num.value}, shots: {sim_num.value:,}, p_L/round: {pl:.4e} ± {error_bar:.4e}")
+                print(f"error: {fail_num.value}, shots: {sim_num.value:,}, p_L/round: {pl/d:.4e} ± {error_bar:.4e}")
 
 
 
